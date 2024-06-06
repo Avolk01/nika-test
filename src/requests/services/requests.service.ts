@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RequestNotFoundException } from 'src/utils/exceptions/request-not-found.exception';
+import { RequestNotFoundException } from '../../utils/exceptions/request-not-found.exception';
 import { ERequestStatus } from '../enums/request-status.enum';
 import { Request } from '../entities/request.entity';
 import { MailService } from './mail.service';
-import { RequestAlreadyResolvedException } from 'src/utils/exceptions/request-already-resolved.exception';
+import { RequestAlreadyResolvedException } from '../../utils/exceptions/request-already-resolved.exception';
 
 @Injectable()
 export class RequestsService {

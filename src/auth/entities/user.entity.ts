@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { ERole } from '../enums/role.enum';
-import { StandardEntity } from 'src/utils/entities/entity';
-import { Request } from 'src/requests/entities/request.entity';
+import { Request } from '../../requests/entities/request.entity';
+import { StandardEntity } from '../../utils/entities/entity';
 
 @Entity({ schema: "nika_test" })
 export class User extends StandardEntity {

@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { TTokenPayload } from '../types/token-payload.type';
-import { InvalidTokenException } from 'src/utils/exceptions/invalid-token.exception';
+import { InvalidTokenException } from '../../utils/exceptions/invalid-token.exception'
 
 @Injectable()
 export class TokenService {
-    constructor(private readonly configService: ConfigService) {}
+    constructor(private readonly configService: ConfigService) { }
 
     public signToken(userId: string): string {
         const tokenPayload = {

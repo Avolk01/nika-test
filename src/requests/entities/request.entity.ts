@@ -1,5 +1,5 @@
-import { User } from 'src/auth/entities/user.entity';
-import { StandardEntity } from 'src/utils/entities/entity';
+import { User } from '../../auth/entities/user.entity';
+import { StandardEntity } from '../../utils/entities/entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity({ schema: 'nika_test' })

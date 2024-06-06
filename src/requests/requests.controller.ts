@@ -1,17 +1,17 @@
 import { Body, Controller, HttpStatus, Param, Post, Get, UseGuards, Put, Req, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { ERoutes } from 'src/utils/enums/routes.enum';
-import { EApiTags } from 'src/utils/enums/api-tags.enum';
 import { CreateRequestInputDto } from './dto/create-request.input.dto';
 import { CreateRequestResponseDto } from './dto/create-request.response.dto';
 import { GetRequestsResponseDto } from './dto/get-requests.response.dto';
-import { ERole } from 'src/auth/enums/role.enum';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import RoleGuard from 'src/utils/guards/role.guard';
+import { ERole } from '../auth/enums/role.enum';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import RoleGuard from '../utils/guards/role.guard';
 import { UpdateRequestResponseDto } from './dto/update-request.response.dto';
 import { UpdateRequestInputDto } from './dto/update-request.input.dto';
 import { GetRequestsInputDto } from './dto/get-requests.input.dto';
 import { RequestsService } from './services/requests.service';
+import { ERoutes } from '../utils/enums/routes.enum';
+import { EApiTags } from '../utils/enums/api-tags.enum';
 
 @Controller(ERoutes.REQUEST)
 @ApiTags(EApiTags.REQUEST)
