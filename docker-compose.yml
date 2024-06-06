@@ -1,0 +1,37 @@
+version: "3.4"
+
+services:
+  db:
+    image: postgres:13.3
+    restart: always
+    command: postgres -c 'shared_buffers=1536MB' -c 'effective_cache_size=4608MB' -c
+      'maintenance_work_mem=384MB' -c 'checkpoint_completion_target=0.9' -c
+      'wal_buffers=16MB' -c 'default_statistics_target=100' -c
+      'random_page_cost=1.1' -c 'effective_io_concurrency=200' -c
+      'work_mem=7864kB' -c 'min_wal_size=2GB' -c 'max_wal_size=8GB' -c
+      'max_connections=2000' -c 'max_replication_slots=50' -c
+      'max_wal_senders=50'
+    volumes:
+      - db:/var/lib/postgresql/data:rw
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - network
+    ports:
+      - "5432:5432"
+    healthcheck:
+      retries: 10
+      interval: 1s
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+
+volumes:
+  db: {}
+
+networks:
+  network:
+    driver: bridge

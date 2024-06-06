@@ -13,8 +13,9 @@ async function bootstrap() {
 
     const docs = new DocumentBuilder()
         .setTitle('Api documentation')
-        .setDescription('Documentation for lessons-marks api')
+        .setDescription('Documentation for nika-test api')
         .setVersion('0.0.1')
+        .addBearerAuth()
         .build();
 
     const document = SwaggerModule.createDocument(app, docs);

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Auth } from '../entities/auth.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HashService } from './hash.service';
@@ -7,17 +6,19 @@ import { TokenService } from './token.service';
 import { UserAlreadyExistException } from 'src/utils/exceptions/user-exist.exception';
 import { UserNotFoundException } from 'src/utils/exceptions/user-not-found.exception';
 import { WrongPasswordException } from 'src/utils/exceptions/wrong-password.exception';
+import { User } from '../entities/user.entity';
+import { ERole } from '../enums/role.enum';
 
 @Injectable()
 export class AuthService {
     constructor(
-        @InjectRepository(Auth)
-        private readonly authRepository: Repository<Auth>,
+        @InjectRepository(User)
+        private readonly authRepository: Repository<User>,
         private readonly hashService: HashService,
         private readonly tokenService: TokenService,
-    ) {}
+    ) { }
 
-    public async signUp({ name, email, password }: { name: string; email: string; password: string }): Promise<string> {
+    public async signUp({ name, email, password, role }: { name: string; email: string; password: string; role: ERole }): Promise<string> {
         const existingUser = await this.authRepository.findOne({ where: { email } });
 
         if (existingUser) {
@@ -26,7 +27,7 @@ export class AuthService {
 
         const hashedPassword = await this.hashService.hashPass(password);
 
-        const user = this.authRepository.create({ name, email, password: hashedPassword });
+        const user = this.authRepository.create({ name, email, password: hashedPassword, role });
 
         await this.authRepository.save(user);
 

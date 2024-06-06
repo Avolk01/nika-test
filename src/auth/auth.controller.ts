@@ -3,19 +3,28 @@ import { AuthService } from './services/auth.service';
 import { AuthSignUpInputDto } from './dto/auth.input.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { TokenResponseDto } from './dto/token.resonse.dto';
-import { EApiTags } from 'src/utils/types/api-tags.enum';
 import { AuthSignInInputDto } from './dto/auth-signin.input.dto';
-import { ERoutes } from 'src/utils/types/routes.enum';
+import { EApiTags } from 'src/utils/enums/api-tags.enum';
+import { ERoutes } from 'src/utils/enums/routes.enum';
+import { ERole } from './enums/role.enum';
 
 @ApiTags(EApiTags.AUTH)
 @Controller(ERoutes.AUTH)
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+    constructor(private readonly authService: AuthService) { }
 
     @ApiOkResponse({ type: TokenResponseDto })
-    @Post('signup')
-    async singUp(@Body() dto: AuthSignUpInputDto): Promise<TokenResponseDto> {
-        const token = await this.authService.signUp(dto);
+    @Post('user/signup')
+    async userSingUp(@Body() dto: AuthSignUpInputDto): Promise<TokenResponseDto> {
+        const token = await this.authService.signUp({ ...dto, role: ERole.USER });
+
+        return { token };
+    }
+
+    @ApiOkResponse({ type: TokenResponseDto })
+    @Post('admin/signup')
+    async adminSingUp(@Body() dto: AuthSignUpInputDto): Promise<TokenResponseDto> {
+        const token = await this.authService.signUp({ ...dto, role: ERole.ADMIN });
 
         return { token };
     }

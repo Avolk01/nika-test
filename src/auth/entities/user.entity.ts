@@ -1,7 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ERole } from '../enums/role.enum';
 
-@Entity()
-export class Auth {
+@Entity({ schema: "nika_test" })
+export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -13,4 +14,7 @@ export class Auth {
 
     @Column()
     password: string;
+
+    @Column()
+    role: ERole;
 }

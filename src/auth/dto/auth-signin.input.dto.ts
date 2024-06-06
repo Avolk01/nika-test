@@ -2,12 +2,6 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from 'class-validat
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthSignInInputDto {
-    @ApiProperty({ description: `user's name`, example: `Джонни`, minLength: 1, maxLength: 100 })
-    @IsNotEmpty()
-    @IsString()
-    @Length(1, 100)
-    name: string;
-
     @ApiProperty({ description: `user's email`, example: `silverhand@cyber.punk` })
     @IsNotEmpty()
     @IsString()

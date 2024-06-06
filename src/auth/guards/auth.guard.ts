@@ -2,15 +2,15 @@ import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TokenService } from '../services/token.service';
-import { Auth } from '../entities/auth.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
         private readonly tokenService: TokenService,
-        @InjectRepository(Auth)
-        private readonly usersRepository: Repository<Auth>,
-    ) {}
+        @InjectRepository(User)
+        private readonly usersRepository: Repository<User>,
+    ) { }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         try {
