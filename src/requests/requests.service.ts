@@ -12,7 +12,7 @@ export class RequestsService {
         private readonly requestsRepository: Repository<Request>,
     ) { }
 
-    public async createRequest({ name, email, message }: { name: string; email: string; message: string }): Promise<Request> {
+    public async createRequest({ name, email, message, userId }: { name: string; email: string; message: string, userId: string }): Promise<Request> {
         const request = this.requestsRepository.create({ name, email, message, status: ERequestStatus.ACTIVE });
 
         return this.requestsRepository.save(request);

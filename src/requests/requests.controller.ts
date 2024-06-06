@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Param, Post, Get, UseGuards, Put } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Param, Post, Get, UseGuards, Put, Req } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ERoutes } from 'src/utils/enums/routes.enum';
 import { EApiTags } from 'src/utils/enums/api-tags.enum';
@@ -21,8 +21,8 @@ export class RequestsController {
     @Post()
     @UseGuards(RoleGuard(ERole.USER))
     @ApiOkResponse({ type: CreateRequestResponseDto, status: HttpStatus.CREATED })
-    async createRequests(@Body() dto: CreateRequestInputDto): Promise<CreateRequestResponseDto> {
-        const request = await this.requestsService.createRequest(dto);
+    async createRequests(@Body() dto: CreateRequestInputDto, @Req() req: { role: string; userId: string }): Promise<CreateRequestResponseDto> {
+        const request = await this.requestsService.createRequest({ ...dto, userId: req.userId });
 
         return request
     }
