@@ -16,6 +16,7 @@ async function bootstrap() {
         .setDescription('Documentation for nika-test api')
         .setVersion('0.0.1')
         .addBearerAuth()
+        .addSecurityRequirements('bearer')
         .build();
 
     const document = SwaggerModule.createDocument(app, docs);

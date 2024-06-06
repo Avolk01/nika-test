@@ -6,7 +6,6 @@ import { RequestsService } from './requests.service';
 import { CreateRequestInputDto } from './dto/create-request.input.dto';
 import { CreateRequestResponseDto } from './dto/create-request.response.dto';
 import { GetRequestsResponseDto } from './dto/get-requests.response.dto';
-import { Roles } from 'src/utils/decorators/roles.decorator';
 import { ERole } from 'src/auth/enums/role.enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import RoleGuard from 'src/utils/guards/role.guard';
