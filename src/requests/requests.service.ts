@@ -18,7 +18,7 @@ export class RequestsService {
         return this.requestsRepository.save(request);
     }
 
-    public async updateRequest({ comment, id }: { id: string; comment: string }): Promise<Request> {
+    public async updateRequest({ comment, id, }: { id: string; comment: string; }): Promise<Request> {
         const request = await this.requestsRepository.findOne({ where: { id } });
 
         if (!request) {
@@ -31,7 +31,25 @@ export class RequestsService {
         return this.requestsRepository.save(request);
     }
 
-    public async getAllRequests(): Promise<Request[]> {
-        return this.requestsRepository.find();
+    public async getAllRequests({ status, before, after }: { status: string | undefined; before: string | undefined; after: string | undefined; }): Promise<Request[]> {
+        const qb = this.requestsRepository.createQueryBuilder('request');
+
+        const chars = { T: ' ', Z: '' };
+
+        const query = [];
+
+        if (status) {
+            query.push(`request.status = '${status}'`);
+        }
+
+        if (before) {
+            query.push(`request.created_at < '${before}'`);
+        }
+
+        if (after) {
+            query.push(`request.created_at > '${after}'`);
+        }
+
+        return qb.where(query.join(" AND ")).getMany();
     }
 }
