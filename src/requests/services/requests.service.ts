@@ -5,6 +5,7 @@ import { RequestNotFoundException } from 'src/utils/exceptions/request-not-found
 import { ERequestStatus } from '../enums/request-status.enum';
 import { Request } from '../entities/request.entity';
 import { MailService } from './mail.service';
+import { RequestAlreadyResolvedException } from 'src/utils/exceptions/request-already-resolved.exception';
 
 @Injectable()
 export class RequestsService {
@@ -21,22 +22,21 @@ export class RequestsService {
         return this.requestsRepository.save(request);
     }
 
-    public async updateRequest({ comment, id, }: { id: string; comment: string; }): Promise<Request> {
+    public async updateRequest({ comment, id, subject, text, html }: { id: string; comment: string; subject: string; text: string; html: string; }): Promise<Request> {
         const request = await this.requestsRepository.findOne({ where: { id } });
 
         if (!request) {
             throw new RequestNotFoundException();
         }
 
+        if (request.status === ERequestStatus.RESOLVED) {
+            throw new RequestAlreadyResolvedException();
+        }
+
         request.comment = comment;
         request.status = ERequestStatus.RESOLVED;
 
-        await this.mailService.sendEmail({
-            email: request.email,
-            subject: "Message from Node js",
-            text: "This message was sent from Node js server.",
-            html: "This <i>message</i> was sent from <strong>Node js</strong> server.,"
-        })
+        await this.mailService.sendEmail({ email: request.email, subject, text, html, })
 
         return this.requestsRepository.save(request);
     }

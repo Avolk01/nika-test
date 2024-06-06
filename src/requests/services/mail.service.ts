@@ -21,12 +21,6 @@ export class MailService {
             },
         });
 
-        await transporter.sendMail({
-            from: this.configService.get('MAIL_FROM'),
-            to: email,
-            subject,
-            text,
-            html,
-        });
+        await transporter.sendMail({ from: this.configService.get('MAIL_FROM'), to: email, subject, text, html });
     }
 }
