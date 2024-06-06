@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Param, Post, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Param, Post, Get, UseGuards, Put } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ERoutes } from 'src/utils/enums/routes.enum';
 import { EApiTags } from 'src/utils/enums/api-tags.enum';
@@ -9,6 +9,8 @@ import { GetRequestsResponseDto } from './dto/get-requests.response.dto';
 import { ERole } from 'src/auth/enums/role.enum';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import RoleGuard from 'src/utils/guards/role.guard';
+import { UpdateRequestResponseDto } from './dto/update-request.response.dto';
+import { UpdateRequestInputDto } from './dto/update-request.input.dto';
 
 @Controller(ERoutes.REQUEST)
 @ApiTags(EApiTags.REQUEST)
@@ -25,13 +27,13 @@ export class RequestsController {
         return request
     }
 
-    // @Post(':id/evaluations')
-    // @ApiOkResponse({ type: CreateEvaluationResponseDto })
-    // async createEvaluation(@Body() dto: CreateEvaluationInputDto, @Param('id') id: number): Promise<CreateEvaluationResponseDto> {
-    //     const evaluation = await this.requestsService.createEvaluation({ score: +dto.score, userId: +dto.user_id, lessonId: id });
+    @Put(':id')
+    @ApiOkResponse({ type: UpdateRequestResponseDto })
+    async updateRequests(@Body() dto: UpdateRequestInputDto, @Param('id') id: string): Promise<UpdateRequestResponseDto> {
+        const request = await this.requestsService.updateRequest({ ...dto, id });
 
-    //     return { id: String(evaluation.id), user_id: String(evaluation.user.id), score: String(evaluation.score) };
-    // }
+        return request
+    }
 
     @Get()
     @UseGuards(RoleGuard(ERole.ADMIN))

@@ -20,9 +20,9 @@ export class GetRequestsResponseDto {
     @ApiProperty({ description: `request's comment`, example: `Thx for your request` })
     comment: string;
 
-    @ApiProperty({ description: `request's created timestamp`, example: ERequestStatus.ACTIVE })
+    @ApiProperty({ description: `request's created timestamp`, example: '2024-06-06T07:50:56.839Z' })
     created_at: Date;
 
-    @ApiProperty({ description: `request's updated timestamp`, example: ERequestStatus.ACTIVE })
+    @ApiProperty({ description: `request's updated timestamp`, example: '2024-06-06T07:50:56.839Z' })
     updated_at: Date;
 }
