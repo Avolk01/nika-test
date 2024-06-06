@@ -2,7 +2,6 @@ import { Body, Controller, HttpStatus, Param, Post, Get, UseGuards, Put, Req, Qu
 import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ERoutes } from 'src/utils/enums/routes.enum';
 import { EApiTags } from 'src/utils/enums/api-tags.enum';
-import { RequestsService } from './requests.service';
 import { CreateRequestInputDto } from './dto/create-request.input.dto';
 import { CreateRequestResponseDto } from './dto/create-request.response.dto';
 import { GetRequestsResponseDto } from './dto/get-requests.response.dto';
@@ -12,6 +11,7 @@ import RoleGuard from 'src/utils/guards/role.guard';
 import { UpdateRequestResponseDto } from './dto/update-request.response.dto';
 import { UpdateRequestInputDto } from './dto/update-request.input.dto';
 import { GetRequestsInputDto } from './dto/get-requests.input.dto';
+import { RequestsService } from './services/requests.service';
 
 @Controller(ERoutes.REQUEST)
 @ApiTags(EApiTags.REQUEST)
@@ -22,8 +22,8 @@ export class RequestsController {
     @Post()
     @UseGuards(RoleGuard(ERole.USER))
     @ApiOkResponse({ type: CreateRequestResponseDto, status: HttpStatus.CREATED })
-    async createRequests(@Body() dto: CreateRequestInputDto, @Req() req: { role: string; userId: string }): Promise<CreateRequestResponseDto> {
-        const request = await this.requestsService.createRequest({ ...dto, userId: req.userId });
+    async createRequests(@Body() dto: CreateRequestInputDto): Promise<CreateRequestResponseDto> {
+        const request = await this.requestsService.createRequest({ ...dto });
 
         return request
     }

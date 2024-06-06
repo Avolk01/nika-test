@@ -1,18 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ERequestStatus } from './enums/request-status.enum';
 import { RequestNotFoundException } from 'src/utils/exceptions/request-not-found.exception';
-import { Request } from './entities/request.entity';
+import { ERequestStatus } from '../enums/request-status.enum';
+import { Request } from '../entities/request.entity';
+import { MailService } from './mail.service';
 
 @Injectable()
 export class RequestsService {
     constructor(
         @InjectRepository(Request)
         private readonly requestsRepository: Repository<Request>,
+
+        private readonly mailService: MailService
     ) { }
 
-    public async createRequest({ name, email, message, userId }: { name: string; email: string; message: string, userId: string }): Promise<Request> {
+    public async createRequest({ name, email, message }: { name: string; email: string; message: string }): Promise<Request> {
         const request = this.requestsRepository.create({ name, email, message, status: ERequestStatus.ACTIVE });
 
         return this.requestsRepository.save(request);
@@ -27,6 +30,13 @@ export class RequestsService {
 
         request.comment = comment;
         request.status = ERequestStatus.RESOLVED;
+
+        await this.mailService.sendEmail({
+            email: request.email,
+            subject: "Message from Node js",
+            text: "This message was sent from Node js server.",
+            html: "This <i>message</i> was sent from <strong>Node js</strong> server.,"
+        })
 
         return this.requestsRepository.save(request);
     }
