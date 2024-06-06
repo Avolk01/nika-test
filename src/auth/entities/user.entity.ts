@@ -1,11 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { ERole } from '../enums/role.enum';
+import { StandardEntity } from 'src/utils/entities/entity';
 
 @Entity({ schema: "nika_test" })
-export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class User extends StandardEntity {
     @Column()
     name: string;
 
